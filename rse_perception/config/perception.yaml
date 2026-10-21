@@ -1,0 +1,17 @@
+apriltag_pose_adapter:
+  ros__parameters:
+    tag_frame: tag_0
+    tf_topic: /tf
+    output_topic: /fiducial_pose/camera
+
+detection_to_marker:
+  ros__parameters:
+    input_topic: /fiducial_pose/camera
+    output_pose_topic: /fiducial_pose/map
+    marker_topic: /fiducial_marker
+    target_frame: map
+    max_detection_age: 0.5
+    marker_namespace: fiducial_detections
+    marker_id: 0
+    marker_size: 0.20
+    marker_lifetime: 0.5
