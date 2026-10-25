@@ -48,6 +48,7 @@ if [ "$MODE" != "build" ] && [ "$MODE" != "install-dependencies" ]; then
         echo -e "${YELLOW}This project hasn't been built yet. Autobuilding...${RESET}"
         echo -e "${YELLOW}(GROS_AUTOBUILD is enabled. To disable autobuild, set GROS_AUTOBUILD='0')${RESET}"
         build
+        source_env
       else
         echo -e "${YELLOW}This project hasn't been built yet. Run ./gROS-mishell build or set the GROS_AUTOBUILD environment variable and run the command again${RESET}"
         exit
