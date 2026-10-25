@@ -30,15 +30,17 @@ source_env() {
   echo -e "${GREEN}Sourced install/setup.bash!${RESET}"
 }
 
-if [ -n "$MODE" ] && [ "$MODE" != "build" ] && [ "$MODE" != "install-dependencies" ]; then
+if [ "$MODE" != "build" ] && [ "$MODE" != "install-dependencies" ]; then
   if [ -d "${SCRIPT_DIR}/../../install/setup.bash" ]; then
     source_env
   else
-    if [ $GROS_AUTOBUILD ]; then
-      echo -e "${YELLOW}This project hasn't been built yet. Autobuilding...${RESET}"
-      echo -e "${YELLOW}(GROS_AUTOBUILD is enabled. To disable autobuild, set GROS_AUTOBUILD='0')${RESET}"
-    else
-      echo -e "${YELLOW}This project hasn't been built yet. Run ./gROS-mishell build or set the GROS_AUTOBUILD environment variable and run the command again${RESET}"
+    if [ -n "$MODE" ]; then
+      if [ "$GROS_AUTOBUILD" == '1' ]; then
+        echo -e "${YELLOW}This project hasn't been built yet. Autobuilding...${RESET}"
+        echo -e "${YELLOW}(GROS_AUTOBUILD is enabled. To disable autobuild, set GROS_AUTOBUILD='0')${RESET}"
+      else
+        echo -e "${YELLOW}This project hasn't been built yet. Run ./gROS-mishell build or set the GROS_AUTOBUILD environment variable and run the command again${RESET}"
+      fi
     fi
   fi
 fi
