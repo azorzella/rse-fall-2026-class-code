@@ -16,6 +16,8 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 RESET='\033[0m'
 
+GROS_AUTOBUILD='0'
+
 MODE=$1
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}}")" && pwd)"
 
@@ -30,34 +32,45 @@ source_env() {
 export ROS_PYTHON_CHECK_FIELDS='1'
 
 if [ "$MODE" != "build" ]; then
-  source_env
+  if [ -d "${SCRIPT_DIR}/../../install/setup.bash" ]; then
+    source_env
+  else
+    if [ $GROS_AUTOBUILD ]; then
+      echo -e "${YELLOW}This project hasn't been built yet. Autobuilding...${RESET}"
+      echo -e "${YELLOW}(GROS_AUTOBUILD is enabled. To disable autobuild, set GROS_AUTOBUILD='0')${RESET}"
+    else
+      echo -e "${YELLOW}This project hasn't been built yet. Run ./gROS-mishell build or set the GROS_AUTOBUILD environment variable and run the command again${RESET}"
+    fi
+  fi
 fi
 
 if [ -z "$MODE" ]; then
-  echo -e "${GREEN}gROS-mishell [ install-dependencies | source | build --debug (optional) | launch-gazebo | launch-gazebo-office | launch-office-nav | launch-perceptron ]${RESET}"
+  echo -e "${GREEN}gROS-mishell [ install-dependencies | source | build | build-debug | build-clean | launch-gazebo | launch-gazebo-office | launch-office-nav | launch-perceptron ]${RESET}"
 elif [ "$MODE" == "install-dependencies" ]; then
   echo -e "${GREEN}Installing dependencies... (rclpy, geometry-msgs, launch, launch-ros, tf-transformations, gaezbo, nav2, apriltag)!${RESET}"
   sudo apt install ros-jazzy-rclpy ros-jazzy-geometry-msgs ros-jazzy-launch-ros ros-jazzy-tf-transformations ros-jazzy-ros-gz ros-jazzy-nav2-bringup ros-jazzy-apriltag -y
 elif [ "$MODE" == "source" ]; then
   echo -e "${GREEN}To source in the current terminal, run 'source ./gROS-mishell'!${RESET}"
 elif [ "$MODE" == "build" ]; then
-  DEBUG=$2
-
-  if [ -z "$DEBUG" ]; then
     echo -e "${GREEN}Building packages using colcon!${RESET}"
     cd "$SCRIPT_DIR"
     cd ../..
     colcon build --symlink-install --cmake-args -DPython3_EXECUTABLE=/usr/bin/python3
     cd -
     echo -e "${GREEN}Remember to source install/setup.bash!${RESET}"
-  else
-    echo -e "${GREEN}Building packages using colon (debug enabled)!${RESET}"
+elif [ "$MODE" == "build-debug" ]; then
+    echo -e "${GREEN}Building packages using colon (-DCMAKE_BUILD_TYPE enabled)!${RESET}"
     cd "$SCRIPT_DIR"
     cd ../..
     colcon build --symlink-install --cmake-args -DPython3_EXECUTABLE=/usr/bin/python3 -DCMAKE_BUILD_TYPE=DEBUG
     cd -
     echo -e "${GREEN}Remember to source install/setup.bash!${RESET}"
-  fi
+elif [ "$MODE" == "build-clean" ]; then
+    echo -e "${GREEN}Deleting /build/, /install/, and /log/...${RESET}"
+    cd "$SCRIPT_DIR"
+    cd ../..
+    rm -r build install log
+    cd -
 elif [ "$MODE" == "gazebo" ]; then
   echo -e "${GREEN}Launching gazebo...${RESET}"
   ros2 launch rse_gazebo warehouse.launch.py
