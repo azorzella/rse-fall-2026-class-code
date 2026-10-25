@@ -50,7 +50,7 @@ if [ "$MODE" != "build" ] && [ "$MODE" != "build-debug" ] && [ "$MODE" != "build
         build
         source_env
       else
-        echo -e "${YELLOW}This project hasn't been built yet. Run ./gROS-mishell build or set the GROS_AUTOBUILD environment variable and run the command again${RESET}"
+        echo -e "${YELLOW}This project hasn't been built yet. Run ./gROS-mishell build or set GROS_AUTOBUILD='1' and run the command again${RESET}"
         exit
       fi
     fi
@@ -58,35 +58,35 @@ if [ "$MODE" != "build" ] && [ "$MODE" != "build-debug" ] && [ "$MODE" != "build
 fi
 
 if [ -z "$MODE" ]; then
-  echo -e "${GREEN}gROS-mishell [ install-dependencies | source | build | build-debug | build-clean | launch-gazebo | launch-gazebo-office | launch-office-nav | launch-perceptron ]${RESET}"
+    echo -e "${GREEN}gROS-mishell [ install-dependencies | source | build | build-debug | build-clean | launch-gazebo | launch-gazebo-office | launch-office-nav | launch-perceptron ]${RESET}"
 elif [ "$MODE" == "install-dependencies" ]; then
-  echo -e "${GREEN}Installing dependencies... (rclpy, geometry-msgs, launch, launch-ros, tf-transformations, gaezbo, nav2, apriltag)!${RESET}"
-  sudo apt install ros-jazzy-rclpy ros-jazzy-geometry-msgs ros-jazzy-launch-ros ros-jazzy-tf-transformations ros-jazzy-ros-gz ros-jazzy-nav2-bringup ros-jazzy-apriltag -y
+    echo -e "${GREEN}Installing dependencies... (rclpy, geometry-msgs, launch, launch-ros, tf-transformations, gaezbo, nav2, apriltag)!${RESET}"
+    sudo apt install ros-jazzy-rclpy ros-jazzy-geometry-msgs ros-jazzy-launch-ros ros-jazzy-tf-transformations ros-jazzy-ros-gz ros-jazzy-nav2-bringup ros-jazzy-apriltag -y
 elif [ "$MODE" == "source" ]; then
-  echo -e "${GREEN}To source in the current terminal, run 'source ./gROS-mishell'!${RESET}"
+      echo -e "${GREEN}To source in the current terminal, run 'source ./gROS-mishell'!${RESET}"
 elif [ "$MODE" == "build" ]; then
-  build
+      build
 elif [ "$MODE" == "build-debug" ]; then
-  echo -e "${GREEN}Building packages using colon (-DCMAKE_BUILD_TYPE enabled)!${RESET}"
-  cd "$SCRIPT_DIR"
-  cd ../..
-  colcon build --symlink-install --cmake-args -DPython3_EXECUTABLE=/usr/bin/python3 -DCMAKE_BUILD_TYPE=DEBUG
-  cd -
-  echo -e "${GREEN}Remember to source install/setup.bash!${RESET}"
+      echo -e "${GREEN}Building packages using colon (-DCMAKE_BUILD_TYPE enabled)!${RESET}"
+      cd "$SCRIPT_DIR"
+      cd ../..
+      colcon build --symlink-install --cmake-args -DPython3_EXECUTABLE=/usr/bin/python3 -DCMAKE_BUILD_TYPE=DEBUG
+      cd -
+      echo -e "${GREEN}Remember to source install/setup.bash!${RESET}"
 elif [ "$MODE" == "build-clean" ]; then
-  echo -e "${GREEN}Deleting /build/, /install/, and /log/...${RESET}"
-  cd "$SCRIPT_DIR"
-  cd ../..
-  rm -r -f build install log
-  cd -
+      echo -e "${GREEN}Deleting /build/, /install/, and /log/...${RESET}"
+      cd "$SCRIPT_DIR"
+      cd ../..
+      rm -r -f build install log
+      cd -
 elif [ "$MODE" == "gazebo" ]; then
-  echo -e "${GREEN}Launching gazebo...${RESET}"
-  ros2 launch rse_gazebo warehouse.launch.py
+      echo -e "${GREEN}Launching gazebo...${RESET}"
+      ros2 launch rse_gazebo warehouse.launch.py
 elif [ "$MODE" == "gazebo-office" ]; then
-  echo -e "${GREEN}Launching gazebo...${RESET}"
-  ros2 launch rse_gazebo office.launch.py
+      echo -e "${GREEN}Launching gazebo...${RESET}"
+      ros2 launch rse_gazebo office.launch.py
 elif [ "$MODE" == "launch-office-nav" ]; then
-  ros2 launch rse_nav2 office_nav.launch.py
+      ros2 launch rse_nav2 office_nav.launch.py
 elif [ "$MODE" == "launch-perceptron" ]; then
-  ros2 launch rse_perceptron perceptron.launch.py
+      ros2 launch rse_perceptron perceptron.launch.py
 fi
