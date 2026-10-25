@@ -28,7 +28,10 @@ source_env() {
 
 # Enable proper runtime parameter validation for ROS2 interfaces 
 export ROS_PYTHON_CHECK_FIELDS='1'
-source_env
+
+if [ "$MODE" != "build" ]; then
+  source_env
+fi
 
 if [ -z "$MODE" ]; then
   echo -e "${GREEN}gROS-mishell [ install-dependencies | source | build --debug (optional) | launch-gazebo | launch-gazebo-office | launch-office-nav | launch-perceptron ]${RESET}"
