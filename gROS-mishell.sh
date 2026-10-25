@@ -39,8 +39,8 @@ build() {
   echo -e "${GREEN}Remember to source install/setup.bash!${RESET}"
 }
 
-if [ "$MODE" != "build" ] && [ "$MODE" != "install-dependencies" ]; then
-  if [ -d "${SCRIPT_DIR}/../../install/setup.bash" ]; then
+if [ "$MODE" != "build" ] && [ "$MODE" != "build-debug" ] && [ "$MODE" != "build-clean" ] && [ "$MODE" != "install-dependencies" ]; then
+  if [ -f "${SCRIPT_DIR}/../../install/setup.bash" ]; then
     source_env
   else
     if [ -n "$MODE" ]; then
