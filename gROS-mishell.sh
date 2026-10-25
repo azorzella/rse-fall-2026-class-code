@@ -77,7 +77,7 @@ elif [ "$MODE" == "build-clean" ]; then
   echo -e "${GREEN}Deleting /build/, /install/, and /log/...${RESET}"
   cd "$SCRIPT_DIR"
   cd ../..
-  rm -r build install log
+  rm -r -f build install log
   cd -
 elif [ "$MODE" == "gazebo" ]; then
   echo -e "${GREEN}Launching gazebo...${RESET}"
