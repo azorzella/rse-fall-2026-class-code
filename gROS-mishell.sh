@@ -16,7 +16,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 RESET='\033[0m'
 
-export GROS_AUTOBUILD='0'
+export GROS_AUTOBUILD='1'
 # Enable proper runtime parameter validation for ROS2 interfaces 
 export ROS_PYTHON_CHECK_FIELDS='1'
 
@@ -30,6 +30,15 @@ source_env() {
   echo -e "${GREEN}Sourced install/setup.bash!${RESET}"
 }
 
+build() {
+  echo -e "${GREEN}Building packages using colcon!${RESET}"
+  cd "$SCRIPT_DIR"
+  cd ../..
+  colcon build --symlink-install --cmake-args -DPython3_EXECUTABLE=/usr/bin/python3
+  cd -
+  echo -e "${GREEN}Remember to source install/setup.bash!${RESET}"
+}
+
 if [ "$MODE" != "build" ] && [ "$MODE" != "install-dependencies" ]; then
   if [ -d "${SCRIPT_DIR}/../../install/setup.bash" ]; then
     source_env
@@ -38,8 +47,10 @@ if [ "$MODE" != "build" ] && [ "$MODE" != "install-dependencies" ]; then
       if [ "$GROS_AUTOBUILD" == '1' ]; then
         echo -e "${YELLOW}This project hasn't been built yet. Autobuilding...${RESET}"
         echo -e "${YELLOW}(GROS_AUTOBUILD is enabled. To disable autobuild, set GROS_AUTOBUILD='0')${RESET}"
+        build
       else
         echo -e "${YELLOW}This project hasn't been built yet. Run ./gROS-mishell build or set the GROS_AUTOBUILD environment variable and run the command again${RESET}"
+        exit
       fi
     fi
   fi
@@ -53,25 +64,20 @@ elif [ "$MODE" == "install-dependencies" ]; then
 elif [ "$MODE" == "source" ]; then
   echo -e "${GREEN}To source in the current terminal, run 'source ./gROS-mishell'!${RESET}"
 elif [ "$MODE" == "build" ]; then
-    echo -e "${GREEN}Building packages using colcon!${RESET}"
-    cd "$SCRIPT_DIR"
-    cd ../..
-    colcon build --symlink-install --cmake-args -DPython3_EXECUTABLE=/usr/bin/python3
-    cd -
-    echo -e "${GREEN}Remember to source install/setup.bash!${RESET}"
+  build
 elif [ "$MODE" == "build-debug" ]; then
-    echo -e "${GREEN}Building packages using colon (-DCMAKE_BUILD_TYPE enabled)!${RESET}"
-    cd "$SCRIPT_DIR"
-    cd ../..
-    colcon build --symlink-install --cmake-args -DPython3_EXECUTABLE=/usr/bin/python3 -DCMAKE_BUILD_TYPE=DEBUG
-    cd -
-    echo -e "${GREEN}Remember to source install/setup.bash!${RESET}"
+  echo -e "${GREEN}Building packages using colon (-DCMAKE_BUILD_TYPE enabled)!${RESET}"
+  cd "$SCRIPT_DIR"
+  cd ../..
+  colcon build --symlink-install --cmake-args -DPython3_EXECUTABLE=/usr/bin/python3 -DCMAKE_BUILD_TYPE=DEBUG
+  cd -
+  echo -e "${GREEN}Remember to source install/setup.bash!${RESET}"
 elif [ "$MODE" == "build-clean" ]; then
-    echo -e "${GREEN}Deleting /build/, /install/, and /log/...${RESET}"
-    cd "$SCRIPT_DIR"
-    cd ../..
-    rm -r build install log
-    cd -
+  echo -e "${GREEN}Deleting /build/, /install/, and /log/...${RESET}"
+  cd "$SCRIPT_DIR"
+  cd ../..
+  rm -r build install log
+  cd -
 elif [ "$MODE" == "gazebo" ]; then
   echo -e "${GREEN}Launching gazebo...${RESET}"
   ros2 launch rse_gazebo warehouse.launch.py
