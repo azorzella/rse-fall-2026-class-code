@@ -16,7 +16,9 @@ GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 RESET='\033[0m'
 
-GROS_AUTOBUILD='0'
+export GROS_AUTOBUILD='0'
+# Enable proper runtime parameter validation for ROS2 interfaces 
+export ROS_PYTHON_CHECK_FIELDS='1'
 
 MODE=$1
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}}")" && pwd)"
@@ -28,10 +30,7 @@ source_env() {
   echo -e "${GREEN}Sourced install/setup.bash!${RESET}"
 }
 
-# Enable proper runtime parameter validation for ROS2 interfaces 
-export ROS_PYTHON_CHECK_FIELDS='1'
-
-if [ "$MODE" != "build" ]; then
+if [ -n "$MODE" ] && [ "$MODE" != "build" ] && [ "$MODE" != "install-dependencies" ]; then
   if [ -d "${SCRIPT_DIR}/../../install/setup.bash" ]; then
     source_env
   else
