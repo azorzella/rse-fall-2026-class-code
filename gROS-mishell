@@ -10,7 +10,7 @@
 #  local cur="${COMP_WORDS[COMP_CWORD]}"
 #  COMPREPLY=( $(compgen -W "install-dependencies source build launch-gazebo launch-gazebo-office launch-office-nav launch-perceptron" -- "$cur") )
 #}
-#complete -F _gROS_mishell_completion ./gROS-mishell.sh
+#complete -F _gROS_mishell_completion ./gROS-mishell
 
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
