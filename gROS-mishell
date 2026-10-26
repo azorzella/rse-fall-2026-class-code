@@ -4,7 +4,7 @@
 # It's written in a way that allows its commands to be run from any folder as it navigates to this directory that holds this script and
 # runs code relative to that, navigating back to the directory that the command was run from. 
 #
-# Add the following code to ~/.bashrc for autocompletio (remember to source ~/.bashrc from the same terminal you edit it from)
+# Add the following code to ~/.bashrc for autocompletion (remember to source ~/.bashrc from the same terminal you edit it from)
 #
 #_gROS_mishell_completion() {
 #  local cur="${COMP_WORDS[COMP_CWORD]}"
