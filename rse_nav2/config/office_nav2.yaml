@@ -180,7 +180,7 @@ global_costmap:
         map_subscribe_transient_local: true
       obstacle_layer:
         plugin: nav2_costmap_2d::ObstacleLayer
-        enabled: true
+        enabled: false
         observation_sources: scan
         scan:
           topic: /scan
