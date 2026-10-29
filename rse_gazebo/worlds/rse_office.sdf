@@ -207,6 +207,22 @@
       </link>
     </model>
 
+    <!-- AprilTag 36h11, ID 0.
+         Mounted on the west face of the conference-room east wall. -->
+    <include>
+      <uri>model://apriltag_0</uri>
+      <name>conference_apriltag_0</name>
+
+      <!--
+           east divider wall center: x = 3.5
+           wall thickness: 0.2 m
+           west face: x = 3.4
+
+           Move 1 cm into the room to avoid z-fighting.
+           Model's tag normal is +X, so yaw=pi makes it face west (-X).
+      -->
+      <pose>3.39 3.8 1.0 0 0 3.14159265</pose>
+    </include>
     <include>
       <uri>model://rse_bot</uri>
       <name>rse_bot</name>
