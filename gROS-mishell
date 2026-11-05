@@ -8,7 +8,7 @@
 #
 #_gROS_mishell_completion() {
 #  local cur="${COMP_WORDS[COMP_CWORD]}"
-#  COMPREPLY=( $(compgen -W "install-dependencies source build launch-gazebo launch-gazebo-office launch-office-nav launch-perceptron" -- "$cur") )
+#  COMPREPLY=( $(compgen -W "install-dependencies source build launch-gazebo launch-gazebo-office launch-office-nav launch-perception" -- "$cur") )
 #}
 #complete -F _gROS_mishell_completion ./gROS-mishell
 
@@ -58,7 +58,7 @@ if [ "$MODE" != "build" ] && [ "$MODE" != "build-debug" ] && [ "$MODE" != "build
 fi
 
 if [ -z "$MODE" ]; then
-    echo -e "${GREEN}gROS-mishell [ install-dependencies | source | build | build-debug | build-clean | launch-gazebo | launch-gazebo-office | launch-office-nav | launch-perceptron ]${RESET}"
+    echo -e "${GREEN}gROS-mishell [ install-dependencies | source | build | build-debug | build-clean | launch-gazebo | launch-gazebo-office | launch-office-nav | launch- ]${RESET}"
 elif [ "$MODE" == "install-dependencies" ]; then
     echo -e "${GREEN}Installing dependencies... (rclpy, geometry-msgs, launch, launch-ros, tf-transformations, gaezbo, nav2, apriltag)!${RESET}"
     sudo apt install ros-jazzy-rclpy ros-jazzy-geometry-msgs ros-jazzy-launch-ros ros-jazzy-tf-transformations ros-jazzy-ros-gz ros-jazzy-nav2-bringup ros-jazzy-apriltag -y
@@ -87,6 +87,6 @@ elif [ "$MODE" == "gazebo-office" ]; then
       ros2 launch rse_gazebo office.launch.py
 elif [ "$MODE" == "launch-office-nav" ]; then
       ros2 launch rse_nav2 office_nav.launch.py
-elif [ "$MODE" == "launch-perceptron" ]; then
-      ros2 launch rse_perceptron perceptron.launch.py
+elif [ "$MODE" == "launch-" ]; then
+      ros2 launch rse_perception.launch.py
 fi
