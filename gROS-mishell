@@ -87,6 +87,6 @@ elif [ "$MODE" == "gazebo-office" ]; then
       ros2 launch rse_gazebo office.launch.py
 elif [ "$MODE" == "launch-office-nav" ]; then
       ros2 launch rse_nav2 office_nav.launch.py
-elif [ "$MODE" == "launch-" ]; then
-      ros2 launch rse_perception.launch.py
+elif [ "$MODE" == "launch-perception" ]; then
+      ros2 launch rse_perception perception.launch.py
 fi
