@@ -83,6 +83,27 @@ class DetectionToMarker(Node):
         if marker is not None:
             self.marker_publisher.publish(marker)
 
+    def is_null_or_whitespace(string):
+        """Returns whether a string is null or whitespace. If the passed object isn't a string, it returns false"""
+
+        if string is None:
+            return True
+
+        if not isinstance(string, str):
+            return False
+
+        result = False
+
+        if string is None:
+            return True
+
+        try:
+            result = not string.strip()
+        except TypeError:
+            print(f"Passed object {string} isn't a string")
+
+        return result
+
     def detection_is_valid(self, detection):
         """TODO 1: return True only for a recent, stamped, framed detection.
 
@@ -93,7 +114,17 @@ class DetectionToMarker(Node):
         - Accept ages between 0.0 and self.max_detection_age seconds.
         - nanoseconds / 1e9 converts a duration to seconds.
         """
-        return False  # Replace this placeholder.
+
+        header = detection.header
+
+        no_frame_id = is_null_or_whitespace(header.frame_id)
+        timestamp_is_zero = header.stamp == 0
+        stale = ((self.get_clock().now() - Time.from_msg(header.stamp)) / 1e9) > self.max_detection_age
+
+        if no_frame_id or timestamp_is_zero or stale:
+            return False
+
+        return True
 
     def transform_to_target(self, detection):
         """TODO 2: return a PoseStamped expressed in self.target_frame.
@@ -104,7 +135,8 @@ class DetectionToMarker(Node):
         or simply change frame_id. The timer retries unavailable transforms.
         """
         try:
-            return None  # Replace with the TF2 transform call.
+            result = self.tf_buffer.transform(detection.pose, self.target_frame, timeout=Duration(seconds=0.0))
+            return result
         except TransformException as error:
             self.get_logger().warning(
                 f'Waiting for transform: {error}', throttle_duration_sec=2.0)
@@ -123,7 +155,30 @@ class DetectionToMarker(Node):
         The cube lies in the tag's local XY plane. Keep its orientation.
         A lifetime of zero means it persists until deleted or overwritten.
         """
-        return None  # Replace with a populated Marker.
+
+        result = Marker()
+
+        result.type = Marker.CUBE
+        result.action = Marker.ADD
+
+        result.header = transformed_pose.header
+        result.pose = transformed_pose.pose
+
+        result.ns = self.marker_namespace
+        result.id = self.marker_id
+
+        result.scale.x = self.marker_size
+        result.scale.y = self.marker_size
+        result.scale.z = 0.02
+
+        result.color.r = 0.95
+        result.color.g = 0.86
+        result.color.b = 0.08
+        result.color.a = 1.0
+
+        result.lifetime = Duration(seconds=self.marker_lifetime).to_msg()
+
+        return result
 
 
 def main(args=None):
