@@ -154,10 +154,15 @@
       <sensor name="front_camera" type="camera">
         <always_on>true</always_on>
         <update_rate>15</update_rate>
-        <camera_info_topic>camera/camera_info</camera_info_topic>
-        <camera>
-          <topic>camera/image_raw</topic>
-          <gz_frame_id>camera_optical_frame</gz_frame_id>
+
+        <!-- These belong directly under sensor -->
+        <topic>/camera/image_raw</topic>
+        <gz_frame_id>camera_optical_frame</gz_frame_id>
+
+        <camera name="front_camera">
+          <!-- This belongs inside camera -->
+          <camera_info_topic>/camera/camera_info</camera_info_topic>
+
           <horizontal_fov>1.047</horizontal_fov>
 
           <image>
